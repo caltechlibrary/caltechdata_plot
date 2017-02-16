@@ -22,6 +22,8 @@ p.grid.grid_line_color = None
 
 source = ColumnDataSource(data=dict(x=[], y=[]))
 p.circle(x="x",y="y", source=source,size=7, color='blue')
+p.title.text = "Plot spectra from CaltechDATA"
+p.title.align="center"
 
 #CaltechDATA Info
 api_url = "https://caltechdata.tind.io/api/records/"
@@ -42,10 +44,13 @@ def callback():
     #Terribly inefficient - to be replaced when api ready
     for f in data['hits']['hits']:
         if f['id']==int(txt.value):
-            url = f['metadata']['electronic_location_and_access'][0]['uniform_resource_identifier']
+            erecord = f['metadata']['electronic_location_and_access'][0]
             #Only looks at first file, no validation
+            url = erecord['uniform_resource_identifier']
             rawframe = pandas.read_csv(url,sep= ',',header=1) 
-            new_data = dict(x=rawframe.index.values,y=rawframe[list(rawframe)[0]])
+            new_data = dict(x=rawframe.index.values,\
+                    y=rawframe[list(rawframe)[0]])
+            p.title.text=erecord['electronic_name'][0]
             #Reads only first column, hard coding
             source.data = new_data
 
