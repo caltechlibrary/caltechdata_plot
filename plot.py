@@ -1,0 +1,58 @@
+# myapp.py
+
+import urllib.request
+import urllib.parse
+import urllib.error
+import ssl
+import json,pandas
+
+from bokeh.layouts import column
+from bokeh.models import Button
+from bokeh.models import ColumnDataSource
+from bokeh.models.widgets.inputs import TextInput
+from bokeh.palettes import RdYlBu3
+from bokeh.plotting import figure, curdoc
+
+# create a plot and style its properties
+p = figure(x_range=(0, 1200), y_range=(0, 2), toolbar_location=None)
+p.border_fill_color = 'white'
+p.background_fill_color = 'white'
+p.outline_line_color = None
+p.grid.grid_line_color = None
+
+source = ColumnDataSource(data=dict(x=[], y=[]))
+p.circle(x="x",y="y", source=source,size=7, color='blue')
+
+#CaltechDATA Info
+api_url = "https://caltechdata.tind.io/api/records/"
+
+req = urllib.request.Request(api_url)
+s = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+response = urllib.request.urlopen(req,context=s)
+data = json.JSONDecoder().decode(response.read().decode('UTF-8'))
+#This is reading in all recent data files - 
+#Terrible workaround because /api/record isn't available
+
+# create a callback that will add a number in a random location
+def callback():
+
+    # BEST PRACTICE --- update .data in one step with a new dict
+    new_data = dict()
+    
+    #Terribly inefficient - to be replaced when api ready
+    for f in data['hits']['hits']:
+        if f['id']==int(txt.value):
+            url = f['metadata']['electronic_location_and_access'][0]['uniform_resource_identifier']
+            #Only looks at first file, no validation
+            rawframe = pandas.read_csv(url,sep= ',',header=1) 
+            new_data = dict(x=rawframe.index.values,y=rawframe[list(rawframe)[0]])
+            #Reads only first column, hard coding
+            source.data = new_data
+
+# add a button widget and configure with the call back
+txt = TextInput(placeholder="Type 208 or 209")
+button = Button(label="Press Me")
+button.on_click(callback)
+
+# put the button and plot in a layout and add to the document
+curdoc().add_root(column(p,txt,button))
