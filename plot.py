@@ -14,9 +14,10 @@ from bokeh.palettes import RdYlBu3
 from bokeh.plotting import figure, curdoc
 
 # create a plot and style its properties
-p = figure(x_range=(0, 1200), y_range=(0, 2), toolbar_location=None)
+p = figure(x_range=(0, 1200), y_range=(0, 2))
 p.border_fill_color = 'white'
 p.background_fill_color = 'white'
+p.height = 500
 p.outline_line_color = None
 p.grid.grid_line_color = None
 
@@ -60,4 +61,5 @@ button = Button(label="Press Me")
 button.on_click(callback)
 
 # put the button and plot in a layout and add to the document
-curdoc().add_root(column(p,txt,button))
+column = column(p,txt,button)
+curdoc().add_root(column)
