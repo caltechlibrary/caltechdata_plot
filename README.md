@@ -1,9 +1,6 @@
 # caltechdata_plot
 
-<a href="https://www.gratipay.com/Shields/">
-        <img src="https://img.shields.io/gratipay/team/shields.svg"
-             alt="Gratipay">
-             </a>
+[![DOI](https://caltechdata.tind.io/badge/83457930.svg)](http://caltechdata.tind.io/badge/latestdoi/83457930)
     
 caltechdata_plot is a demo interactive plotting tool that uses Bokeh server 
 to produce an interactive plot by calling the caltechDATA (Invenio 3) API
