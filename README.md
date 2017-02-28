@@ -28,7 +28,7 @@ You could also install anaconda manually.
 ```shell
 server {
     listen 80 default_server;
-    server_name _;
+    server_name plots.caltechlibrary.org;
 
     access_log  /tmp/bokeh.access.log;
     error_log   /tmp/bokeh.error.log debug;
@@ -59,8 +59,7 @@ respawn
 
 script
 cd /home/ubuntu/caltechdata_plot/
-sudo -u ubuntu /home/ubuntu/anaconda3/bin/bokeh serve plot.py --host
-54.202.72.182 > bokeh.log
+sudo -u ubuntu /home/ubuntu/anaconda3/bin/bokeh serve plot.py --host plots.caltechlibrary.org > bokeh.log
 end script
 ```
 
