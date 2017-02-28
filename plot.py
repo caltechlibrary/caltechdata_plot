@@ -27,7 +27,8 @@ p.title.text = "Plot spectra from CaltechDATA"
 p.title.align="center"
 
 #CaltechDATA Info
-api_url = "https://caltechdata.tind.io/api/records/"
+api_url = "https://caltechdata.tind.io/api/records/?query=&size=100"
+#Terrible hard coding
 
 req = urllib.request.Request(api_url)
 s = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
