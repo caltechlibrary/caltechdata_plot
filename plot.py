@@ -26,35 +26,35 @@ p.circle(x="x",y="y", source=source,size=7, color='blue')
 p.title.text = "Plot spectra from CaltechDATA"
 p.title.align="center"
 
-#CaltechDATA Info
-api_url = "https://caltechdata.tind.io/api/records/?query=&size=100"
-#Terrible hard coding
-
-req = urllib.request.Request(api_url)
-s = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-response = urllib.request.urlopen(req,context=s)
-data = json.JSONDecoder().decode(response.read().decode('UTF-8'))
-#This is reading in all recent data files - 
-#Terrible workaround because /api/record isn't available
-
 # create a callback that will add a number in a random location
 def callback():
+
+    #CaltechDATA Info
+    api_url = "https://caltechdata.tind.io/api/record/"
 
     # BEST PRACTICE --- update .data in one step with a new dict
     new_data = dict()
     
-    #Terribly inefficient - to be replaced when api ready
-    for f in data['hits']['hits']:
-        if f['id']==int(txt.value):
-            erecord = f['metadata']['electronic_location_and_access'][0]
-            #Only looks at first file, no validation
-            url = erecord['uniform_resource_identifier']
-            rawframe = pandas.read_csv(url,sep= ',',header=1) 
-            new_data = dict(x=rawframe.index.values,\
-                    y=rawframe[list(rawframe)[0]])
-            p.title.text=erecord['electronic_name'][0]
-            #Reads only first column, hard coding
-            source.data = new_data
+    #Should have validation that input from form is valid
+    api_url = api_url + txt.value
+
+    req = urllib.request.Request(api_url)
+    s = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+    response = urllib.request.urlopen(req,context=s)
+    data = json.JSONDecoder().decode(response.read().decode('UTF-8'))
+
+    erecord = data['metadata']['electronic_location_and_access'][0]
+    #Only looks at first file, no validation
+    url = erecord['uniform_resource_identifier']
+
+    rawframe = pandas.read_csv(url,sep= ',',header=1) 
+    new_data = dict(x=rawframe.index.values,\
+            y=rawframe[list(rawframe)[0]])
+
+    p.title.text=erecord['electronic_name'][0]
+    #Reads only first column, hard coding
+
+    source.data = new_data
 
 # add a button widget and configure with the call back
 txt = TextInput(placeholder="Type 208 or 209")
