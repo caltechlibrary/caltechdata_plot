@@ -13,7 +13,7 @@ This is example is not general and only works with mineral spectra records 208 a
 - Install Bokeh by typing 'conda install bokeh'
 - bokeh serve --show plot.py 
 
-# AWS Setup
+### AWS Setup
 
 Instructions for setting up an AWS server that will show plots
 
