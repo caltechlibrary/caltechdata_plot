@@ -1,6 +1,6 @@
 # caltechdata_plot
 
-[![DOI](https://caltechdata.tind.io/badge/83457930.svg)](http://caltechdata.tind.io/badge/latestdoi/83457930)
+[![DOI](https://data.caltech.edu/badge/83457930.svg)](http://data.caltech.edu/badge/latestdoi/83457930)
     
 caltechdata_plot is a demo interactive plotting tool that uses Bokeh server 
 to produce an interactive plot by calling the caltechDATA (Invenio 3) API

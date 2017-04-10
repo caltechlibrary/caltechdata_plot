@@ -30,7 +30,7 @@ p.title.align="center"
 def callback():
 
     #CaltechDATA Info
-    api_url = "https://caltechdata.tind.io/api/record/"
+    api_url = "https://data.caltech.edu/api/record/"
 
     # BEST PRACTICE --- update .data in one step with a new dict
     new_data = dict()
