@@ -15,11 +15,17 @@ This is example is not general and only works with mineral spectra records 208 a
 
 ### AWS Setup
 
-Instructions for setting up an AWS server that will show plots
+Instructions for setting up an AWS server that will show plots.  This configuration has been tested on Ubuntu 16.04.
 
-- Create a new AWS EC2 instance using one of the Anaconda community images.
-You can find the listing of these image names on the Anaconda web site.
-You could also install anaconda manually.
+- Install Anaconda by downloading the installer below and following the prompts (you can update the links for new versions).
+
+```shell
+curl https://repo.continuum.io/archive/Anaconda3-4.3.1-Linux-x86_64.sh > Anaconda3-4.3.1-Linux-x86_64.sh
+bash Anaconda3-4.3.1-Linux-x86_64.sh 
+```
+
+(You can also use a preconfigured AWS Anaconda community images, but this limits your choice of servers)
+
 - Install Bokeh by typing 'conda install bokeh'
 - Install nginx by typing 'sudo apt-get install nginx'
 - Remove default and add configuration at 
@@ -47,26 +53,28 @@ server {
 ```
 
 - Restart web server with 'sudo service nginx restart'
-- Add this configuration to /etc/init/plot.conf
+- Add this configuration to /etc/systemd/system/plot.service
 
 ```shell
-# Start bokeh plot
+[Unit]
+Description=Bokeh Plot
+After=syslog.target network.target remote-fs.target nss-lookup.target
 
-start on stopped rc RUNLEVEL=[2345]
-stop on runlevel [!2345]
+[Service]
+Type=simple
+WorkingDirectory=/home/ubuntu/caltechdata_plot/
+ExecStart=/home/ubuntu/anaconda3/bin/bokeh serve plot.py --allow-websocket-origin plots.caltechlibrary.org
+Restart=on-failure
 
-respawn
-
-script
-cd /home/ubuntu/caltechdata_plot/
-sudo -u ubuntu /home/ubuntu/anaconda3/bin/bokeh serve plot.py --host plots.caltechlibrary.org > bokeh.log
-end script
+[Install]
+WantedBy=multi-user.target
 ```
 
-- Reload by typing 'sudo initctl reload-configuration'
-- You can start up bokeh with 'sudo initctl start plot'
+- Reload by typing 'sudo systemctl daemon-reload'
+- You can start up bokeh with 'sudo systemctl start plot'
+- Start the plotting server on reboot with 'sudo systemctl enable plot'
 
-## Usage
+## Command Line Usage
 
 ```shell
    python caltechdata_read.py [-h]
