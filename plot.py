@@ -26,7 +26,7 @@ p.circle(x="x",y="y", source=source,size=7, color='blue')
 p.title.text = "Plot spectra from CaltechDATA"
 p.title.align="center"
 p.xaxis.axis_label = "Wavelength (nm)"
-p.yxis.axis_label = "Absorbance"
+p.yaxis.axis_label = "Absorbance"
 
 # create a callback that will add a number in a random location
 def callback():
