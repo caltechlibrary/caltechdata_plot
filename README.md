@@ -77,9 +77,6 @@ WantedBy=multi-user.target
 ## Command Line Usage
 
 ```shell
-   python caltechdata_read.py [-h]
+   bokeh serve plot.py
 ```
-
-optional arguments:
-  -h, --help  show this help message and exit
 
